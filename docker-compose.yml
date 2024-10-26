@@ -1,0 +1,4 @@
+services:
+  pkg2appimage:
+    image: pkg2appimage
+    build: .
