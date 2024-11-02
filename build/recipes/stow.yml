@@ -1,23 +1,19 @@
 app: stow
 binpatch: true
-
 ingredients:
   dist: xenial
   packages:
-    - build-essential
     - perl
-    - wget
-    - imagemagick
+    - perl-base
+    - make
   sources:
     - deb http://archive.ubuntu.com/ubuntu/ xenial main universe
-
 script:
   # Install cpanminus and Test::Output
   - curl -L https://cpanmin.us | perl - App::cpanminus
   - export PATH="$HOME/perl5/bin:$PATH"
   - export PERL5LIB="$HOME/perl5/lib/perl5"
   - cpanm --local-lib="$HOME/perl5" Test::Output
-
   # Build and install stow
   - wget https://ftp.gnu.org/gnu/stow/stow-2.3.1.tar.gz
   - tar xf stow-2.3.1.tar.gz
@@ -28,7 +24,6 @@ script:
   - make install DESTDIR=$(pwd)/build
   - cd ..
   - cp -r stow-2.3.1/build/usr .
-
   # Create desktop file
   - mkdir -p usr/share/applications
   - cat > usr/share/applications/stow.desktop <<EOF
@@ -42,7 +37,6 @@ script:
   - Terminal=true
   - EOF
   - cp usr/share/applications/stow.desktop .
-
   # Create icon
   - mkdir -p usr/share/icons/hicolor/256x256/apps/
   - convert -size 256x256 xc:transparent -font DejaVu-Sans -fill black -pointsize 48 -gravity center -draw "text 0,0 'STOW'" usr/share/icons/hicolor/256x256/apps/stow.png
